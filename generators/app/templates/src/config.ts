@@ -1,6 +1,7 @@
 const config = {
   appName: 'example-api',
   appPort: 3200,
+  <% if (useRabbitMq) { %>
   messaging: {
     exchanges: [
       {
@@ -11,6 +12,7 @@ const config = {
     uri: 'amqp://rabbitmq:rabbitmq@localhost:5672/example',
     connectionInitOptions: { wait: false },
   },
+  <% } %>
   database: {
     connectionString: 'mongodb://localhost/nest',
   },
@@ -23,15 +25,19 @@ const config = {
     url: 'http://localhost:9200',
     index: 'example',
   },
+  <% if (useRedis) { %>
   redis: {
     host: 'localhost',
     port: 6379,
   },
+  <% } %>
+  <% if (useOpenApiSources) { %>
   openApi: {
     hosts: [
       { name: 'PetStore', url: 'https://petstore.swagger.io/v2/swagger.json' },
     ],
   },
+  <% } %>
 };
 
 export default config;

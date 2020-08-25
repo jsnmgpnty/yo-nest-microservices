@@ -1,32 +1,44 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+<% if (useRabbitMq) { %>
 import { MessagingModule } from '../messaging/messaging.module';
+<% } %>
 import { ExampleController } from './controller/example.controller';
 import { ExampleSchema, Example } from './schema/example.entity';
 import { ExampleService } from './services/example.service';
 import { CommonModule } from '../common/common.module';
 import { LoggingModule } from '../logging/logging.module';
+<% if (useRedis) { %>
 import { RedisModule } from '../redis/redis.module';
+<% } %>
 import config from '../config';
-import { OpenApiService, OpenApiConnectorModule } from 'src/open-api-connector';
+<% if (useOpenApiSources) { %>
+import { OpenApiConnectorModule } from 'src/open-api-connector';
+<% } %>
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Example.name, schema: ExampleSchema }]),
     LoggingModule.register({ elasticSearch: config.elasticSearch, appName: config.appName }),
+    <% if (useRabbitMq) { %>
     MessagingModule.register(
       config.messaging,
       { elasticSearch: config.elasticSearch, appName: `amqp-${config.appName}` },
     ),
+    <% } %>
+    <% if (useRedis) { %>
     RedisModule.register(
       { appName: config.appName, host: config.redis.host, port: config.redis.port }, 
       { elasticSearch: config.elasticSearch, appName: `redis-${config.appName}` },
     ),
+    <% } %>
+    <% if (useOpenApiSources) { %>
     OpenApiConnectorModule.register(
       config.openApi,
       { elasticSearch: config.elasticSearch, appName: `open-api-${config.appName}` },
     ),
     CommonModule,
+    <% } %>
   ],
   controllers: [ExampleController],
   providers: [ExampleService],

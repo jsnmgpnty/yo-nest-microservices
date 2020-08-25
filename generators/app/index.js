@@ -38,6 +38,24 @@ module.exports = class extends Generator {
         name: "appTitle",
         message: "What is the title of your project?",
         default: ""
+      },
+      {
+        type: "input",
+        name: "useRedis",
+        message: "Do you want to use Redis? (Y/N)",
+        default: "Y"
+      },
+      {
+        type: "input",
+        name: "useOpenApiSources",
+        message: "Do you want to use OpenAPI spec sources? (Y/N)",
+        default: "Y"
+      },
+      {
+        type: "input",
+        name: "useRabbitMq",
+        message: "Do you want to use RabbitMQ? (Y/N)",
+        default: "Y"
       }
     ];
 
@@ -48,16 +66,77 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    // Copy src files
+    // Copy main.ts
     this.fs.copyTpl(
-      this.templatePath("src/**/*"),
-      this.destinationPath(`${this.props.name}/src`),
+      this.templatePath("src/main.ts"),
+      this.destinationPath(`${this.props.name}/src/main.ts`)
+    );
+    // Copy config.ts
+    this.fs.copyTpl(
+      this.templatePath("src/config.ts"),
+      this.destinationPath(`${this.props.name}/src/config.ts`),
+      {
+        useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
+        useRedis: this.props.useRedis.toLowerCase() === 'y',
+        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y'
+      }
+    );
+    // Copy app module
+    this.fs.copyTpl(
+      this.templatePath("src/app/**/*"),
+      this.destinationPath(`${this.props.name}/src/app`)
+    );
+    // Copy common module
+    this.fs.copyTpl(
+      this.templatePath("src/common/**/*"),
+      this.destinationPath(`${this.props.name}/src/common`)
+    );
+    // Copy example module
+    this.fs.copyTpl(
+      this.templatePath("src/example/**/*"),
+      this.destinationPath(`${this.props.name}/src/example`),
+      {
+        useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
+        useRedis: this.props.useRedis.toLowerCase() === 'y',
+        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y'
+      }
+    );
+    // Copy logging module
+    this.fs.copyTpl(
+      this.templatePath("src/logging/**/*"),
+      this.destinationPath(`${this.props.name}/src/logging`)
+    );
+    // Copy public module
+    this.fs.copyTpl(
+      this.templatePath("src/public/**/*"),
+      this.destinationPath(`${this.props.name}/src/public`),
       {
         appTitle: this.props.name,
         description: this.props.description,
         author: this.props.author
       }
     );
+    if (this.props.useRabbitMq.toLowerCase() === 'y') {
+      // Copy messaging module
+      this.fs.copyTpl(
+        this.templatePath("src/messaging/**/*"),
+        this.destinationPath(`${this.props.name}/src/messaging`)
+      );
+    }
+    if (this.props.useRedis.toLowerCase() === 'y') {
+      // Copy redis module
+      this.fs.copyTpl(
+        this.templatePath("src/redis/**/*"),
+        this.destinationPath(`${this.props.name}/src/redis`)
+      );
+    }
+    if (this.props.useRabbitMq.toLowerCase() === 'y') {
+      // Copy open api connector module
+      this.fs.copyTpl(
+        this.templatePath("src/open-api-connector/**/*"),
+        this.destinationPath(`${this.props.name}/src/open-api-connector`)
+      );
+    }
 
     // Copy test files
     this.fs.copyTpl(
