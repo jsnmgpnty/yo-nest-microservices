@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Jason Magpantay",
+      "authorEmail": "jsnmgpnty@gmail.com",
+      "authorUrl": "http://www.jasonmagpantay.com"
+    }
+  }
+}

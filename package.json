@@ -1,0 +1,32 @@
+{
+  "name": "generator-nest-microservices",
+  "version": "0.0.1",
+  "description": "Template for creating NestJS based web apis with Mongo, ELK, Redis, OpenAPI and RabbitMQ",
+  "author": {
+    "name": "Jason Magpantay",
+    "url": "http://www.jasonmagpantay.com"
+  },
+  "files": [
+    "generators"
+  ],
+  "keywords": [
+    "microservices",
+    "nest",
+    "mongo",
+    "elk",
+    "redis",
+    "rabbitmq",
+    "yeoman-generator"
+  ],
+  "main": "generators/index.js",
+  "dependencies": {
+    "yeoman-generator": "^4.11.0",
+    "chalk": "^4.1.0",
+    "yosay": "^2.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/jsnmgpnty/yo-nest-microservices",
+  "license": "ISC"
+}
