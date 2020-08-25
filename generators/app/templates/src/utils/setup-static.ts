@@ -1,11 +1,10 @@
 import { NestFastifyApplication } from "@nestjs/platform-fastify";
 import * as fs from 'fs';
-import { resolve } from 'path';
 
-const setupStaticPage = (app: NestFastifyApplication) => {
+const setupStaticPage = (app: NestFastifyApplication, path: string) => {
   const srv = app.getHttpAdapter();
   srv.get('/', (req, rep) => {
-    fs.readFile(resolve(__dirname, 'public', 'index.html'), (err, data) => {
+    fs.readFile(path, (err, data) => {
       if (err) {
         rep.type('application/json').send(err.toString());
         return;
