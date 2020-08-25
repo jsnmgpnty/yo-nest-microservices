@@ -118,13 +118,8 @@ module.exports = class extends Generator {
     );
     // Copy public module
     this.fs.copyTpl(
-      this.templatePath("src/util/**/*"),
-      this.destinationPath(`${this.props.name}/src/util`),
-      {
-        appTitle: this.props.name,
-        description: this.props.description,
-        author: this.props.author
-      }
+      this.templatePath("src/utils/**/*"),
+      this.destinationPath(`${this.props.name}/src/utils`)
     );
     if (this.props.useRabbitMq.toLowerCase() === 'y') {
       // Copy messaging module
