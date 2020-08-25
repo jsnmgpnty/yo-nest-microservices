@@ -116,6 +116,16 @@ module.exports = class extends Generator {
         author: this.props.author
       }
     );
+    // Copy public module
+    this.fs.copyTpl(
+      this.templatePath("src/util/**/*"),
+      this.destinationPath(`${this.props.name}/src/util`),
+      {
+        appTitle: this.props.name,
+        description: this.props.description,
+        author: this.props.author
+      }
+    );
     if (this.props.useRabbitMq.toLowerCase() === 'y') {
       // Copy messaging module
       this.fs.copyTpl(
