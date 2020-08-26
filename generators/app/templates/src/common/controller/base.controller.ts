@@ -6,7 +6,8 @@ import { BaseService } from '../services/base.service';
 export class BaseController<T extends BaseEntity, TS extends BaseService<T>> {
   constructor (private service: TS) { }
 
-  protected async find(queryString: string): Promise<EntityMetadata<T[]>> {
+  protected async find(queryString?: string): Promise<EntityMetadata<T[]>> {
+    if (!queryString) return await this.service.find(null, null);
     const query = JSON.parse(decodeURIComponent(queryString));
     if (!query) return this.sendErrorResponse(new ErrorInfo(BaseErrors.InvalidArguments, null, 500));
     return await this.service.find(query.filter, query.options, query.sort, query.skip, query.take);
