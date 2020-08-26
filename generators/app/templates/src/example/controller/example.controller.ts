@@ -1,6 +1,6 @@
 import { Controller, Get, Delete, Put, Query, Post, Body, Param } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
-import { Example } from '../schema/example.entity';
+import { Example } from '../schema/example.schema';
 import { ExampleService } from '../services/example.service';
 import { EntityMetadata, ErrorInfo } from '../../common/models';
 import { BaseController } from '../../common/controller/base.controller';

@@ -4,7 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { MessagingModule } from '../messaging/messaging.module';
 <% } %>
 import { ExampleController } from './controller/example.controller';
-import { ExampleSchema, Example } from './schema/example.entity';
+import { ExampleSchema } from './schema/example.schema';
+import { Example } from './models/example.entity';
 import { ExampleService } from './services/example.service';
 import { CommonModule } from '../common/common.module';
 import { LoggingModule } from '../logging/logging.module';
