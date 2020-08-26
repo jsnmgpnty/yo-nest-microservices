@@ -1,5 +1,5 @@
 import { Controller, Get, Delete, Put, Query, Post, Body, Param } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiOperation, ApiImplicitQuery } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { Example } from '../schema/example.schema';
 import { ExampleService } from '../services/example.service';
 import { EntityMetadata, ErrorInfo } from '../../common/models';
@@ -18,7 +18,7 @@ export class ExampleController extends BaseController<Example, ExampleService> {
   @ApiResponse({ type: Example, status: 200, isArray: true })
   @ApiResponse({ type: ErrorInfo, status: 500 })
   @ApiOperation({ operationId: 'find' })
-  @ApiImplicitQuery({ name: 'query', required: false, type: String })
+  @ApiQuery({ name: 'query', required: false, type: String })
   async find(@Query('query') queryString?: string): Promise<EntityMetadata<Example[]>> {
     return super.find(queryString);
   }
