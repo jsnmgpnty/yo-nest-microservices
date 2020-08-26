@@ -24,7 +24,8 @@ export class BaseRepository<T extends BaseEntity> {
     const parsedId = this.toObjectId(id);
     item.modifiedDate = new Date();
     const result = this.model.update({ _id: parsedId }, item);
-    return result.exec() as Promise<T>;
+    if (result.nModified !== 1) throw new Error(`Failed to update entity ${id}`);
+    return this.findById(id);
   }
 
   public async delete(id: string): Promise<{ ok?: number; n?: number }> {
