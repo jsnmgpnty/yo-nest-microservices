@@ -18,7 +18,7 @@ export class ExampleController extends BaseController<Example, ExampleService> {
   @ApiResponse({ type: Example, status: 200, isArray: true })
   @ApiResponse({ type: ErrorInfo, status: 500 })
   @ApiOperation({ operationId: 'find' })
-  async find(@Query('query') queryString: string): Promise<EntityMetadata<Example[]>> {
+  async find(@Query('query') queryString?: string): Promise<EntityMetadata<Example[]>> {
     return super.find(queryString);
   }
 
