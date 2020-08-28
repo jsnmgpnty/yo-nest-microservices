@@ -14,7 +14,7 @@ import { RedisModule } from '../redis/redis.module';
 <% } %>
 import { ConfigOptions } from '../config-options';
 <% if (useOpenApiSources) { %>
-import { OpenApiConnectorModule } from 'src/open-api-connector';
+import { OpenApiConnectorModule } from '../open-api-connector';
 <% } %>
 
 @Module({ })

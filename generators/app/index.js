@@ -139,7 +139,7 @@ module.exports = class extends Generator {
         this.destinationPath(`${this.props.name}/src/redis`)
       );
     }
-    if (this.props.useRabbitMq.toLowerCase() === 'y') {
+    if (this.props.useOpenApiSources.toLowerCase() === 'y') {
       // Copy open api connector module
       this.fs.copyTpl(
         this.templatePath("src/open-api-connector/**/*"),

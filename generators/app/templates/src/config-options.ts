@@ -1,6 +1,12 @@
+<% if (useRabbitMq) { %>
 import { MessagingOptions } from './messaging';
+<% } %>
+<% if (useOpenApiSources) { %>
 import { OpenApiOptions } from './open-api-connector';
+<% } %>
+<% if (useRedis) { %>
 import { RedisOptions } from './redis';
+<% } %>
 
 export interface ElasticSearchOptions {
   url: string;
@@ -20,10 +26,16 @@ export interface DatabaseOptions {
 export interface ConfigOptions {
   appName: string;
   appPort: number;
+  <% if (useRabbitMq) { %>
   messaging?: MessagingOptions;
+  <% } %>
   database?: DatabaseOptions;
   swagger?: SwaggerOptions;
   elasticSearch?: ElasticSearchOptions;
+  <% if (useRedis) { %>
   redis?: RedisOptions;
+  <% } %>
+  <% if (useOpenApiSources) { %>
   openApi?: OpenApiOptions
+  <% } %>
 }
