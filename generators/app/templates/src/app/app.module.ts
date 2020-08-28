@@ -1,12 +1,17 @@
-import { Module } from '@nestjs/common';
+import { Module, DynamicModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigOptions } from '../config-options';
 import { ExampleModule } from '../example/example.module';
-import config from '../config';
 
-@Module({
-  imports: [
-    MongooseModule.forRoot(config.database.connectionString),
-    ExampleModule,
-  ],
-})
-export class AppModule {}
+@Module({})
+export class AppModule {
+  static register(options: ConfigOptions): DynamicModule {
+    return {
+      module: AppModule,
+      imports: [
+        MongooseModule.forRoot(options.database.connectionString),
+        ExampleModule.register(options),
+      ],
+    };
+  }
+}

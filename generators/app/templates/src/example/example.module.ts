@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, DynamicModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 <% if (useRabbitMq) { %>
 import { MessagingModule } from '../messaging/messaging.module';
@@ -12,36 +12,40 @@ import { LoggingModule } from '../logging/logging.module';
 <% if (useRedis) { %>
 import { RedisModule } from '../redis/redis.module';
 <% } %>
-import config from '../config';
+import { ConfigOptions } from 'src/config-options';
 <% if (useOpenApiSources) { %>
 import { OpenApiConnectorModule } from 'src/open-api-connector';
 <% } %>
 
-@Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Example.name, schema: ExampleSchema }]),
-    LoggingModule.register({ elasticSearch: config.elasticSearch, appName: config.appName }),
-    <% if (useRabbitMq) { %>
-    MessagingModule.register(
-      config.messaging,
-      { elasticSearch: config.elasticSearch, appName: `amqp-${config.appName}` },
-    ),
-    <% } %>
-    <% if (useRedis) { %>
-    RedisModule.register(
-      { appName: config.appName, host: config.redis.host, port: config.redis.port }, 
-      { elasticSearch: config.elasticSearch, appName: `redis-${config.appName}` },
-    ),
-    <% } %>
-    <% if (useOpenApiSources) { %>
-    OpenApiConnectorModule.register(
-      config.openApi,
-      { elasticSearch: config.elasticSearch, appName: `open-api-${config.appName}` },
-    ),
-    CommonModule,
-    <% } %>
-  ],
-  controllers: [ExampleController],
-  providers: [ExampleService],
-})
-export class ExampleModule {}
+@Module({ })
+export class ExampleModule {
+  static register(config: ConfigOptions): DynamicModule {
+    return {
+      imports: [
+        MongooseModule.forFeature([{ name: Example.name, schema: ExampleSchema }]),
+        LoggingModule.register({ elasticSearch: config.elasticSearch, appName: config.appName }),
+        <% if (useRabbitMq) { %>
+        MessagingModule.register(
+          config.messaging,
+          { elasticSearch: config.elasticSearch, appName: `amqp-${config.appName}` },
+        ),
+        <% } %>
+        <% if (useRedis) { %>
+        RedisModule.register(
+          { appName: config.appName, host: config.redis.host, port: config.redis.port }, 
+          { elasticSearch: config.elasticSearch, appName: `redis-${config.appName}` },
+        ),
+        <% } %>
+        <% if (useOpenApiSources) { %>
+        OpenApiConnectorModule.register(
+          config.openApi,
+          { elasticSearch: config.elasticSearch, appName: `open-api-${config.appName}` },
+        ),
+        CommonModule,
+        <% } %>
+      ],
+      controllers: [ExampleController],
+      providers: [ExampleService],
+    };
+  }
+}

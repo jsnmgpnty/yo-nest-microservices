@@ -6,14 +6,19 @@ import {
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import setupStaticPage from './utils/setup-static';
-import config from './config';
 import { resolve } from 'path';
+import { getConfig } from './config-helper';
+import { ConfigOptions } from './config-options';
+require('dotenv').config();
 
 async function bootstrap() {
+  // configuration setup
+  const config = getConfig() as ConfigOptions;
+
   // fastify app setup
   const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter()
+    AppModule.register(config),
+    new FastifyAdapter(),
   );
   app.setGlobalPrefix('api');
 

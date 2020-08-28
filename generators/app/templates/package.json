@@ -35,6 +35,7 @@
     "amqp-connection-manager": "^3.2.0",
     "amqplib": "^0.6.0",
     "cache-manager": "^3.3.0",
+    "dotenv": "^8.2.0",
     "fastify": "^3.2.1",
     "fastify-swagger": "^3.3.0",
     "lodash": "^4.17.20",
