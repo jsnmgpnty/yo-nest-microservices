@@ -1,8 +1,7 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor, HttpStatus } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isArray, isObject } from 'lodash';
-import { Types } from 'mongoose';
 
 @Injectable()
 export class EntitySanitizerInterceptor implements NestInterceptor {
@@ -30,7 +29,7 @@ export class EntitySanitizerInterceptor implements NestInterceptor {
         delete: true,
       },
       {
-        validate: (obj, prop) => obj[prop] === 'object',
+        validate: (obj, prop) => typeof obj[prop] === 'object',
         recurse: true,
         delete: false,
       },
@@ -41,9 +40,8 @@ export class EntitySanitizerInterceptor implements NestInterceptor {
     return next
       .handle()
       .pipe(
-        map(response => {
-          if (!response) return null;
-          let objectToClean = response.data ? response.data : response;
+        map(result => {
+          if (!result) return null;
           
           const clean = (object) => {
             for (let prop in object) {
@@ -62,9 +60,9 @@ export class EntitySanitizerInterceptor implements NestInterceptor {
             return object;
           };
 
-          if (isArray(objectToClean)) objectToClean.forEach(o => clean(o));
-          if (isObject) clean(objectToClean);
-          return objectToClean;
+          if (isArray(result)) result.forEach(o => clean(o));
+          if (isObject) clean(result);
+          return result;
         }),
       );
   }

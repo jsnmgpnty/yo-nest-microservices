@@ -12,11 +12,11 @@ export class BaseRepository<T extends BaseEntity> {
   public async create(item: T): Promise<T> {
     item.createdDate = moment.utc(new Date()).toDate();
     item.modifiedDate = moment.utc(new Date()).toDate();
-    return await this.model.create(item) as T;
+    return (await this.model.create(item)).toJSON() as T;
   }
 
   public async getAll(): Promise<T[]> {
-    return await this.model.find({}) as T[];
+    return await this.model.find({}).lean().exec() as T[];
   }
 
   public async update(id: string, item: T): Promise<T> {
@@ -32,11 +32,11 @@ export class BaseRepository<T extends BaseEntity> {
   }
 
   public async findById(id: string): Promise<T> {
-    return await this.model.findById(id) as T;
+    return await this.model.findById(id).lean().exec() as T;
   }
 
   public async findOne(cond?: object): Promise<T> {
-    return await this.model.findOne(cond) as T;
+    return await this.model.findOne(cond).lean().exec() as T;
   }
 
   public async find(cond?: object, options?: object, sort?: object, skip: number = 0, take: number = 10): Promise<T[]> {

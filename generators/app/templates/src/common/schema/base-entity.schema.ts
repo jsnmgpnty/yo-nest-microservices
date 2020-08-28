@@ -14,23 +14,20 @@ const BaseEntitySchema: mongoose.Schema = new mongoose.Schema({
   modifiedDate: Date,
 }, BaseEntitySchemaOptions);
 
-const postFindOne = (doc) => {
-  doc.id = doc._id.toHexString();
+const postFindOne = (doc, next) => {
+  if (doc && doc['_id']) doc['id'] = doc['_id'].toHexString();
+  next();
 };
 
-const postFind = (doc) => {
+const postFind = (doc, next) => {
   if (isArray(doc)) {
     const list = doc as Document[];
-    list.forEach(d => postFindOne(d));
+    list.forEach(d => {
+      if (d && d['_id']) d['id'] = d['_id'].toHexString();
+    });
   } else {
-    postFindOne(doc)
+    postFindOne(doc, next)
   }
-};
-
-const preSave = (next) => {
-  const now = new Date();
-  if (!this.get('createdDate')) this.set('createdDate', now);
-  if (!this.get('modifiedDate')) this.set('modifiedDate', now);
   next();
 };
 
@@ -49,7 +46,6 @@ BaseEntitySchema.virtual('id').get(function () {
 const BaseEntityHooks: SchemaHooks = {
   postFindOne,
   postFind,
-  preSave,
 };
 
 export { BaseEntitySchema, BaseEntitySchemaOptions, BaseEntityHooks };
