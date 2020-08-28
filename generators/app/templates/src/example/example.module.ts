@@ -12,7 +12,7 @@ import { LoggingModule } from '../logging/logging.module';
 <% if (useRedis) { %>
 import { RedisModule } from '../redis/redis.module';
 <% } %>
-import { ConfigOptions } from 'src/config-options';
+import { ConfigOptions } from '../config-options';
 <% if (useOpenApiSources) { %>
 import { OpenApiConnectorModule } from 'src/open-api-connector';
 <% } %>
@@ -21,6 +21,7 @@ import { OpenApiConnectorModule } from 'src/open-api-connector';
 export class ExampleModule {
   static register(config: ConfigOptions): DynamicModule {
     return {
+      module: ExampleModule,
       imports: [
         MongooseModule.forFeature([{ name: Example.name, schema: ExampleSchema }]),
         LoggingModule.register({ elasticSearch: config.elasticSearch, appName: config.appName }),
@@ -41,8 +42,8 @@ export class ExampleModule {
           config.openApi,
           { elasticSearch: config.elasticSearch, appName: `open-api-${config.appName}` },
         ),
-        CommonModule,
         <% } %>
+        CommonModule.register(config),
       ],
       controllers: [ExampleController],
       providers: [ExampleService],

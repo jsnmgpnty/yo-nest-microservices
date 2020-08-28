@@ -81,6 +81,10 @@ module.exports = class extends Generator {
         useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y'
       }
     );
+    this.fs.copyTpl(
+      this.templatePath("src/config-options.ts"),
+      this.destinationPath(`${this.props.name}/src/config-options.ts`),
+    );
     // Copy app module
     this.fs.copyTpl(
       this.templatePath("src/app/**/*"),
