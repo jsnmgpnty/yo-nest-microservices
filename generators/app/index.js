@@ -73,8 +73,8 @@ module.exports = class extends Generator {
     );
     // Copy config.ts
     this.fs.copyTpl(
-      this.templatePath("src/config.ts"),
-      this.destinationPath(`${this.props.name}/src/config.ts`),
+      this.templatePath("src/config-helper"),
+      this.destinationPath(`${this.props.name}/src/config-helper.ts`),
       {
         useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
         useRedis: this.props.useRedis.toLowerCase() === 'y',
@@ -172,6 +172,15 @@ module.exports = class extends Generator {
         name: this.props.name,
         description: this.props.description,
         author: this.props.author
+      }
+    );
+    this.fs.copyTpl(
+      this.templatePath("_.env"),
+      this.destinationPath(`${this.props.name}/.env`),
+      {
+        useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
+        useRedis: this.props.useRedis.toLowerCase() === 'y',
+        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y'
       }
     );
     this.fs.copy(
