@@ -1,6 +1,6 @@
 import { Model, model } from 'mongoose';
-import { BaseEntitySchemaOptions, BaseEntitySchema } from '../../common/schema/base-entity.schema';
-import { extendSchema } from '../../common/models';
+import { BaseEntitySchemaOptions, BaseEntitySchema, BaseEntityHooks } from '../../common/schema/base-entity.schema';
+import { extendSchema, BaseEntity } from '../../common/models';
 import { Example } from '../models/example.entity';
 
 const ExampleSchema = extendSchema(
@@ -9,6 +9,7 @@ const ExampleSchema = extendSchema(
     name: String,
   },
   BaseEntitySchemaOptions,
+  BaseEntityHooks,
 );
 
 const ExampleSchemaModel: Model<Example> = model<Example>('Example', ExampleSchema);
