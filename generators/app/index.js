@@ -84,6 +84,11 @@ module.exports = class extends Generator {
     this.fs.copyTpl(
       this.templatePath("src/config-options.ts"),
       this.destinationPath(`${this.props.name}/src/config-options.ts`),
+      {
+        useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
+        useRedis: this.props.useRedis.toLowerCase() === 'y',
+        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y'
+      }
     );
     // Copy app module
     this.fs.copyTpl(
