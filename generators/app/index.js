@@ -189,7 +189,10 @@ module.exports = class extends Generator {
       {
         useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
         useRedis: this.props.useRedis.toLowerCase() === 'y',
-        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y'
+        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y',
+        appName: this.props.name,
+        appDescription: this.props.description,
+        appTitle: this.props.appTitle,
       }
     );
     this.fs.copy(
