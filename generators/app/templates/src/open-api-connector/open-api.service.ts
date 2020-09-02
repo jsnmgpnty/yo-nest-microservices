@@ -1,6 +1,8 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { OpenApiSource, SwaggerClientResult } from './open-api-options';
 import { LoggerService } from '../logging';
+import { EntityMetadata, ErrorInfo } from '../common/models';
+import { OpenApiSource, SwaggerClientResult } from './open-api-options';
+import { OpenApiErrors } from './open-api-errors.enum';
 const SwaggerClient = require('swagger-client');
 
 @Injectable()
@@ -54,10 +56,16 @@ export class OpenApiService implements OnModuleInit {
             const responseInterceptor = (res) => {
               if (res.body) return handleResponse(res.body);
               if (res.text) return handleResponse(JSON.parse(res.text));
-              return res;
+              return res; 
             };
 
-            return client.apis[tag][method].call(this, args, { responseInterceptor, requestInterceptor });
+            try {
+              return client.apis[tag][method].call(this, args, { responseInterceptor, requestInterceptor });
+            } catch (err) {
+              const message = `Error encountered when calling [${tag}][${method}]`;
+              this.logger.error(message, err);
+              return new EntityMetadata(null, new ErrorInfo(OpenApiErrors.FailedToInvokeMethod));
+            }
           };
         }
       }
