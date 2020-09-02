@@ -44,13 +44,20 @@ export class OpenApiService implements OnModuleInit {
               return res;
             };
 
+            const requestInterceptor = (req) => {
+              if (req.method === 'POST' && !req.body) {
+                req.body = JSON.stringify(args);
+              }
+              return req;
+            }
+
             const responseInterceptor = (res) => {
               if (res.body) return handleResponse(res.body);
               if (res.text) return handleResponse(JSON.parse(res.text));
               return res;
             };
 
-            return client.apis[tag][method].call(this, args, { responseInterceptor });
+            return client.apis[tag][method].call(this, args, { responseInterceptor, requestInterceptor });
           };
         }
       }
@@ -60,6 +67,9 @@ export class OpenApiService implements OnModuleInit {
       return { name: option.name, option, isSuccess: true };
     } catch (error) {
       this.logger.error(`Failed to initialize OpenAPI source for ${option.name}`, error);
+      setTimeout(async () => {
+        await this.initializeService(option);
+      }, this.retryDelay);
     }
   }
 }

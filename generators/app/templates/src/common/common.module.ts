@@ -4,6 +4,7 @@ import { LoggingModule } from '../logging/logging.module';
 import { LoggerInterceptor } from './interceptors/logger.interceptor';
 import { ExceptionInterceptor } from './interceptors/exception.interceptor';
 import { EntitySanitizerInterceptor } from './interceptors/entity-sanitizer.interceptor';
+import { RequestSanitizerInterceptor } from './interceptors/request-sanitizer.interceptor';
 import { ConfigOptions } from '../config-options';
 
 @Module({ })
@@ -16,6 +17,7 @@ export class CommonModule {
         { provide: APP_INTERCEPTOR, useClass: LoggerInterceptor },
         { provide: APP_INTERCEPTOR, useClass: ExceptionInterceptor },
         { provide: APP_INTERCEPTOR, useClass: EntitySanitizerInterceptor },
+        { provide: APP_INTERCEPTOR, useClass: RequestSanitizerInterceptor },
       ]
     };
   }

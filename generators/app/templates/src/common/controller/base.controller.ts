@@ -4,7 +4,11 @@ import { ErrorInfo, EntityMetadata, BaseEntity, BaseErrors } from '../models';
 import { BaseService } from '../services/base.service';
 
 export class BaseController<T extends BaseEntity, TS extends BaseService<T>> {
-  constructor (private service: TS) { }
+  protected service: TS;
+
+  constructor (service: TS) {
+    this.service = service;
+  }
 
   protected async find(queryString?: string): Promise<EntityMetadata<T[]>> {
     if (!queryString) return await this.service.find(null, null);
