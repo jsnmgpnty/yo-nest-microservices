@@ -39,6 +39,14 @@ export const getConfig = (): any => {
       ],
     },
     <% } %>
+    <% if (useStorage) { %>
+    storage: {
+      accountName: process.env.STORAGE_ACCOUNT_NAME,
+      accessKey: process.env.STORAGE_ACCESS_KEY,
+      connectionString: process.env.STORAGE_CONNECTION_STRING,
+      containerName: process.env.STORAGE_CONTAINER_NAME,
+    },
+    <% } %>
   };
   return config;
 };

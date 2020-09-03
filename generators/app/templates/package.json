@@ -22,6 +22,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.2.0-preview.1",
     "@elastic/elasticsearch": "^7.9.0",
     "@golevelup/nestjs-rabbitmq": "^1.15.1",
     "@nestjs/common": "^7.4.2",

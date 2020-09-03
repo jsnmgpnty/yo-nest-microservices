@@ -35,6 +35,12 @@ module.exports = class extends Generator {
       },
       {
         type: "input",
+        name: "appPort",
+        message: "What port would you like your app to use for local development?",
+        default: "3000"
+      },
+      {
+        type: "input",
         name: "appTitle",
         message: "What is the title of your project?",
         default: ""
@@ -55,6 +61,12 @@ module.exports = class extends Generator {
         type: "input",
         name: "useRabbitMq",
         message: "Do you want to use RabbitMQ? (Y/N)",
+        default: "Y"
+      },
+      {
+        type: "input",
+        name: "useStorage",
+        message: "Do you want to use Azure Storage? (Y/N)",
         default: "Y"
       }
     ];
@@ -78,7 +90,8 @@ module.exports = class extends Generator {
       {
         useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
         useRedis: this.props.useRedis.toLowerCase() === 'y',
-        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y'
+        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y',
+        useStorage: this.props.useStorage.toLowerCase() === 'y',
       }
     );
     this.fs.copyTpl(
@@ -87,7 +100,8 @@ module.exports = class extends Generator {
       {
         useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
         useRedis: this.props.useRedis.toLowerCase() === 'y',
-        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y'
+        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y',
+        useStorage: this.props.useStorage.toLowerCase() === 'y',
       }
     );
     // Copy app module
@@ -107,7 +121,8 @@ module.exports = class extends Generator {
       {
         useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
         useRedis: this.props.useRedis.toLowerCase() === 'y',
-        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y'
+        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y',
+        useStorage: this.props.useStorage.toLowerCase() === 'y',
       }
     );
     // Copy logging module
@@ -142,6 +157,13 @@ module.exports = class extends Generator {
       this.fs.copyTpl(
         this.templatePath("src/redis/**/*"),
         this.destinationPath(`${this.props.name}/src/redis`)
+      );
+    }
+    if (this.props.useStorage.toLowerCase() === 'y') {
+      // Copy redis module
+      this.fs.copyTpl(
+        this.templatePath("src/storage/**/*"),
+        this.destinationPath(`${this.props.name}/src/storage`)
       );
     }
     if (this.props.useOpenApiSources.toLowerCase() === 'y') {
@@ -189,10 +211,12 @@ module.exports = class extends Generator {
       {
         useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
         useRedis: this.props.useRedis.toLowerCase() === 'y',
-        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y',
+        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y',,
+        useStorage: this.props.useStorage.toLowerCase() === 'y',
         appName: this.props.name,
         appDescription: this.props.description,
         appTitle: this.props.appTitle,
+        appPort: this.props.appPort,
       }
     );
     this.fs.copy(

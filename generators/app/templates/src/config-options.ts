@@ -7,6 +7,9 @@ import { OpenApiOptions } from './open-api-connector';
 <% if (useRedis) { %>
 import { RedisOptions } from './redis';
 <% } %>
+<% if (useStorage) { %>
+import { StorageOptions } from './storage';
+<% } %>
 
 export interface ElasticSearchOptions {
   url: string;
@@ -37,5 +40,8 @@ export interface ConfigOptions {
   <% } %>
   <% if (useOpenApiSources) { %>
   openApi?: OpenApiOptions
+  <% } %>
+  <% if (useStorage) { %>
+  storageOptions?: StorageOptions
   <% } %>
 }

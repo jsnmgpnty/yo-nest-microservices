@@ -9,13 +9,7 @@ import { Example } from './models/example.entity';
 import { ExampleService } from './services/example.service';
 import { CommonModule } from '../common/common.module';
 import { LoggingModule } from '../logging/logging.module';
-<% if (useRedis) { %>
-import { RedisModule } from '../redis/redis.module';
-<% } %>
 import { ConfigOptions } from '../config-options';
-<% if (useOpenApiSources) { %>
-import { OpenApiConnectorModule } from '../open-api-connector';
-<% } %>
 
 @Module({ })
 export class ExampleModule {
@@ -24,26 +18,7 @@ export class ExampleModule {
       module: ExampleModule,
       imports: [
         MongooseModule.forFeature([{ name: Example.name, schema: ExampleSchema }]),
-        LoggingModule.register({ elasticSearch: config.elasticSearch, appName: config.appName }),
-        <% if (useRabbitMq) { %>
-        MessagingModule.register(
-          config.messaging,
-          { elasticSearch: config.elasticSearch, appName: `amqp-${config.appName}` },
-        ),
-        <% } %>
-        <% if (useRedis) { %>
-        RedisModule.register(
-          { appName: config.appName, host: config.redis.host, port: config.redis.port }, 
-          { elasticSearch: config.elasticSearch, appName: `redis-${config.appName}` },
-        ),
-        <% } %>
-        <% if (useOpenApiSources) { %>
-        OpenApiConnectorModule.register(
-          config.openApi,
-          { elasticSearch: config.elasticSearch, appName: `open-api-${config.appName}` },
-        ),
-        <% } %>
-        CommonModule.register(config),
+        CommonModule.register(),
       ],
       controllers: [ExampleController],
       providers: [ExampleService],

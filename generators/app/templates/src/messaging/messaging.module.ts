@@ -1,19 +1,16 @@
-import { Module, DynamicModule } from '@nestjs/common';
+import { Module, DynamicModule, Global } from '@nestjs/common';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { SubscriberService } from './subscriber.service';
 import { PublisherService } from './publisher.service';
 import { MessagingOptions } from './messaging-options';
-import { LoggingModule, LoggerOptions } from '../logging';
 
+@Global()
 @Module({ })
 export class MessagingModule {
-  static register (options: MessagingOptions, logOptions?: LoggerOptions) : DynamicModule {
+  static register (options: MessagingOptions) : DynamicModule {
     return {
       module: MessagingModule,
-      imports: [
-        RabbitMQModule.forRoot(RabbitMQModule, options),
-        LoggingModule.register(logOptions)
-      ],
+      imports: [RabbitMQModule.forRoot(RabbitMQModule, options)],
       providers: [SubscriberService, PublisherService],
       exports: [SubscriberService, PublisherService],
     };

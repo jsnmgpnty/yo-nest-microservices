@@ -1,7 +1,8 @@
-import { DynamicModule, Logger, Module, OnModuleInit } from '@nestjs/common';
+import { DynamicModule, Global, Module } from '@nestjs/common';
 import { LoggerService } from './logger.service';
 import { LoggerOptions } from './logger-options.model';
 
+@Global()
 @Module({})
 export class LoggingModule {
   static register (loggerOptions?: LoggerOptions) : DynamicModule {
