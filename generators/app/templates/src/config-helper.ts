@@ -12,6 +12,7 @@ export const getConfig = (): any => {
       ],
       uri: process.env.MESSAGING_URI,
       connectionInitOptions: { wait: false },
+      connectionManagerOptions: { heartbeatIntervalInSeconds: 60 },
     },
     <% } %>
     database: {
