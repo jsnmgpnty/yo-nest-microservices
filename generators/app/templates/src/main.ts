@@ -9,6 +9,7 @@ import setupStaticPage from './utils/setup-static';
 import { resolve } from 'path';
 import { getConfig } from './config-helper';
 import { ConfigOptions } from './config-options';
+import { LoggerService } from './logging';
 require('dotenv').config();
 
 async function bootstrap() {
@@ -19,7 +20,9 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule.register(config),
     new FastifyAdapter(),
+    { logger: false },
   );
+  app.useLogger(app.get(LoggerService));
   app.setGlobalPrefix('api');
 
   // open api setup

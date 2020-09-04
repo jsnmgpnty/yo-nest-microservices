@@ -1,44 +1,39 @@
+import { Injectable, Logger } from '@nestjs/common';
 import * as _ from 'lodash';
 import * as winston from 'winston';
-import { Injectable } from '@nestjs/common';
-import { LoggerOptions } from './logger-options.model';
-import { ConsoleTransportOptions } from 'winston/lib/winston/transports';
 import { ElasticsearchTransportOptions, ElasticsearchTransport } from 'winston-elasticsearch';
 import { Client } from '@elastic/elasticsearch';
+import { LoggerOptions } from './logger-options.model';
 
 @Injectable()
-export class LoggerService {
+export class LoggerService extends Logger {
   logger: winston.Logger;
   options: LoggerOptions;
 
   constructor (options: LoggerOptions) {
+    super(options.appName, true);
     this.options = options;
     this.init();
     this.createLogger();
   }
 
-  info (message: string) {
+  log (message: string) {
+    super.log(message);
     this.logger.log('info', this.formatMessage(message));
   }
 
   error (message: string, error: any) {
+    super.error(message, error?.stack || error);
     this.logger.log('error', this.formatMessage(message), error);
   }
 
   warn (message: string) {
+    super.warn(message);
     this.logger.log('warn', this.formatMessage(message));
   }
 
   private init() {
     if (!this.options) this.options = { appName: 'API' };
-    if (!this.options.console) this.options.console = this.getDefaultConsoleOptions();
-  }
-
-  private getDefaultConsoleOptions(): ConsoleTransportOptions{
-    return {
-      handleExceptions: true,
-      level: 'debug',
-    };
   }
 
   private createLogger() {
