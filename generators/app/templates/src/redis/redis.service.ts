@@ -30,7 +30,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
           this.logError('Failed to flush all', err, reject);
           return;
         }
-        this.logger.info('Cleared all redis key/values');
+        this.logger.log('Cleared all redis key/values');
         resolve(reply);
       });
     })
@@ -43,7 +43,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
           this.logError(`Failed to set key ${key}`, err, reject);
           return;
         }
-        this.logger.info(`Set key ${key} to cache: ${JSON.stringify(value)}`);
+        this.logger.log(`Set key ${key} to cache: ${JSON.stringify(value)}`);
         resolve(reply);
       })
     });
@@ -69,7 +69,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
           this.logError(`Failed to publish to channel ${channel}`, err, reject);
           return;
         }
-        this.logger.info(`Published to channel ${channel}: ${JSON.stringify(value)}`);
+        this.logger.log(`Published to channel ${channel}: ${JSON.stringify(value)}`);
         resolve(reply);
       })
     });
@@ -94,7 +94,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
         subscription.callback(message);
       }); 
 
-      this.logger.info(`Subscribed to channel ${channel}`);
+      this.logger.log(`Subscribed to channel ${channel}`);
       resolve(true);
     });
   }

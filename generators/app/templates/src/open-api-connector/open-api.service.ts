@@ -71,7 +71,7 @@ export class OpenApiService implements OnModuleInit {
       }
 
       this[option.name] = result;
-      this.logger.info(`Initialized OpenAPI source for ${option.name}`);
+      this.logger.log(`Initialized OpenAPI source for ${option.name}`);
       return { name: option.name, option, isSuccess: true };
     } catch (error) {
       this.logger.error(`Failed to initialize OpenAPI source for ${option.name}`, error);

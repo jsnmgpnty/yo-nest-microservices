@@ -3,6 +3,7 @@ import {
   StorageSharedKeyCredential,
   newPipeline,
 } from '@azure/storage-blob';
+const intoStream = require('into-stream');
 import { OnModuleInit, Injectable } from '@nestjs/common';
 import { LoggerService } from '../logging';
 import { StorageOptions } from './storage-options';
@@ -36,6 +37,7 @@ export class StorageService implements OnModuleInit {
   ): Promise<string> {
     if (folderPath) folderPath = folderPath.replace(/\/$/, '');
     const blobName = this.getBlobName();
+    const stream = intoStream(file.buffer);
     const containerClient = this.blobServiceClient.getContainerClient(
       containerName
     );
@@ -45,7 +47,7 @@ export class StorageService implements OnModuleInit {
 
     try {
       const result = await blockBlobClient.uploadStream(
-        file,
+        stream,
         this.uploadOptions.bufferSize,
         this.uploadOptions.maxBuffers,
         { blobHTTPHeaders: { blobContentType: 'image/jpeg' } }

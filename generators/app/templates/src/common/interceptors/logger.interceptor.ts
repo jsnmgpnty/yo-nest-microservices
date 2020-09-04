@@ -21,7 +21,7 @@ export class LoggerInterceptor implements NestInterceptor {
       .handle()
       .pipe(
         tap(() => {
-          if (url && type && status) this.loggerService.info(`${type} - ${status}: ${url} - ${Date.now() - now}ms`);
+          if (url && type && status) this.loggerService.log(`${type} - ${status}: ${url} - ${Date.now() - now}ms`);
         }),
       );
   }
