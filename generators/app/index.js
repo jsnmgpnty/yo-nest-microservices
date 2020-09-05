@@ -107,7 +107,13 @@ module.exports = class extends Generator {
     // Copy app module
     this.fs.copyTpl(
       this.templatePath("src/app/**/*"),
-      this.destinationPath(`${this.props.name}/src/app`)
+      this.destinationPath(`${this.props.name}/src/app`),
+      {
+        useRabbitMq: this.props.useRabbitMq.toLowerCase() === 'y',
+        useRedis: this.props.useRedis.toLowerCase() === 'y',
+        useOpenApiSources: this.props.useOpenApiSources.toLowerCase() === 'y',
+        useStorage: this.props.useStorage.toLowerCase() === 'y',
+      }
     );
     // Copy common module
     this.fs.copyTpl(
