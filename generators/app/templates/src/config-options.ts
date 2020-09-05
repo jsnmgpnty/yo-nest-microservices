@@ -42,6 +42,6 @@ export interface ConfigOptions {
   openApi?: OpenApiOptions
   <% } %>
   <% if (useStorage) { %>
-  storageOptions?: StorageOptions
+  storage?: StorageOptions
   <% } %>
 }

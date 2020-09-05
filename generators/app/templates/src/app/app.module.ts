@@ -10,8 +10,9 @@ import { RedisModule } from '../redis/redis.module';
 import { OpenApiConnectorModule } from '../open-api-connector';
 <% } %>
 <% if (useStorage) { %>
-import { StorageModule } from '../storage-module';
+import { StorageModule } from '../storage';
 <% } %>
+import { LoggingModule } from '../logging';
 import { ConfigOptions } from '../config-options';
 import { ExampleModule } from '../example/example.module';
 
@@ -35,8 +36,8 @@ export class AppModule {
         <% if (useStorage) { %>
         StorageModule.register(config.storage),
         <% } %>
-        ExampleModule.register(options),
+        ExampleModule.register(config),
       ],
-  };
-}
+    };
+  }
 }

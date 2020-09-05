@@ -166,7 +166,7 @@ module.exports = class extends Generator {
       );
     }
     if (this.props.useStorage.toLowerCase() === 'y') {
-      // Copy redis module
+      // Copy storage module
       this.fs.copyTpl(
         this.templatePath("src/storage/**/*"),
         this.destinationPath(`${this.props.name}/src/storage`)

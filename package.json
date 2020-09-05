@@ -1,6 +1,6 @@
 {
   "name": "generator-nest-microservices",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Template for creating NestJS based web apis with Mongo, ELK, Redis, OpenAPI and RabbitMQ",
   "author": {
     "name": "Jason Magpantay",
