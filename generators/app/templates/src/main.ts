@@ -4,6 +4,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as helmet from 'fastify-helmet';
 import { AppModule } from './app/app.module';
 import setupStaticPage from './utils/setup-static';
 import { resolve } from 'path';
@@ -22,6 +23,7 @@ async function bootstrap() {
     new FastifyAdapter(),
     { logger: false },
   );
+  app.register(helmet);
   app.useLogger(app.get(LoggerService));
   app.setGlobalPrefix('api');
 

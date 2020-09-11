@@ -1,7 +1,6 @@
 import {
   CallHandler,
   ExecutionContext,
-  HttpException,
   HttpStatus,
   Injectable,
   NestInterceptor,
@@ -9,6 +8,7 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { LoggerService } from '../../logging/logger.service';
+import { AppException } from '../models';
 
 @Injectable()
 export class ExceptionInterceptor implements NestInterceptor {
@@ -16,8 +16,8 @@ export class ExceptionInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToHttp();
-    const request = ctx.getRequest().raw;
-    const response = ctx.getResponse().raw;
+    const request = ctx.getRequest();
+    const response = ctx.getResponse();
     if (!request || !response) return next.handle();
 
     const status = response.statusCode;
@@ -32,13 +32,7 @@ export class ExceptionInterceptor implements NestInterceptor {
             `Error encountered when hitting ${method} - ${url} - status: ${status} - timestamp: ${new Date().toISOString()}`,
             err
           );
-          const { response } = err;
-          return throwError(
-            new HttpException(
-              response,
-              HttpStatus.BAD_REQUEST,
-            ),
-          );
+          return throwError(err);
         }),
       );
   }
