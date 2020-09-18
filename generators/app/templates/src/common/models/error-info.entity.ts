@@ -17,6 +17,6 @@ export class ErrorInfo {
     if (!_.isNil(errorType)) this.type = errorType;
     if (!_.isNil(error)) this.error = error;
     this.message = !_.isNil(message) ? message : this.type;
-    this.statusCode = !_.isNil(statusCode) ? statusCode : 500;
+    this.statusCode = !_.isNil(statusCode) ? statusCode : 400;
   }
 }
