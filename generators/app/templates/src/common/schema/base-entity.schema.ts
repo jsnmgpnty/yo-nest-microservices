@@ -21,7 +21,7 @@ const postFindOne = (doc, next) => {
 
 const postFind = (doc, next) => {
   if (isArray(doc)) {
-    const list = doc as Document[];
+    const list = doc as mongoose.Document[];
     list.forEach(d => {
       if (d && d['_id']) d['id'] = d['_id'].toHexString();
     });

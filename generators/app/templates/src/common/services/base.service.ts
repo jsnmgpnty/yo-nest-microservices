@@ -17,7 +17,7 @@ export class BaseService<T extends BaseEntity> {
       if (!result) return this.convertToEntityMetadata<T>(null, null);
       return this.convertToEntityMetadata(null, result);
     } catch (error) {
-      const errInfo = new ErrorInfo(BaseErrors.FailedToCreateResource, null, 500, error);
+      const errInfo = new ErrorInfo(BaseErrors.FailedToCreateResource, null, 400, error);
       return this.convertToEntityMetadata<T>(errInfo);
     }
   }
@@ -28,7 +28,7 @@ export class BaseService<T extends BaseEntity> {
       if (!result) return this.convertToEntityMetadata<T[]>(null, null);
       return this.convertToEntityMetadata<T[]>(null, result);
     } catch (error) {
-      const errInfo = new ErrorInfo(BaseErrors.UnhandledError, null, 500, error);
+      const errInfo = new ErrorInfo(BaseErrors.UnhandledError, null, 400, error);
       return this.convertToEntityMetadata<T[]>(errInfo);
     }
   }
@@ -41,7 +41,7 @@ export class BaseService<T extends BaseEntity> {
       if (!result) return this.convertToEntityMetadata<T>(null, null);
       return this.convertToEntityMetadata<T>(null, result);
     } catch (error) {
-      const errInfo = new ErrorInfo(BaseErrors.FailedToUpdateResource, null, 500, error);
+      const errInfo = new ErrorInfo(BaseErrors.FailedToUpdateResource, null, 400, error);
       return this.convertToEntityMetadata<T>(errInfo);
     }
   }
@@ -63,10 +63,10 @@ export class BaseService<T extends BaseEntity> {
       if (!result) return this.convertToEntityMetadata<boolean>(null, null);
       if (!_.isNil(result.ok) && result.ok > 0) return this.convertToEntityMetadata<boolean>(null, true);
       return this.convertToEntityMetadata<boolean>(
-        new ErrorInfo(BaseErrors.FailedToDeleteResource, null, 500)
+        new ErrorInfo(BaseErrors.FailedToDeleteResource, null, 400)
       );
     } catch (error) {
-      const errInfo = new ErrorInfo(BaseErrors.FailedToDeleteResource, null, 500, error);
+      const errInfo = new ErrorInfo(BaseErrors.FailedToDeleteResource, null, 400, error);
       return this.convertToEntityMetadata<boolean>(errInfo);
     }
   }
@@ -77,7 +77,7 @@ export class BaseService<T extends BaseEntity> {
       if (!result) return this.convertToEntityMetadata<T>(null, null);
       return this.convertToEntityMetadata<T>(null, result);
     } catch (error) {
-      const errInfo = new ErrorInfo(BaseErrors.UnhandledError, null, 500, error);
+      const errInfo = new ErrorInfo(BaseErrors.UnhandledError, null, 400, error);
       return this.convertToEntityMetadata<T>(errInfo);
     }
   }
@@ -88,7 +88,7 @@ export class BaseService<T extends BaseEntity> {
       if (!result) return this.convertToEntityMetadata<T>(null, null);
       return this.convertToEntityMetadata<T>(null, result);
     } catch (error) {
-      const errInfo = new ErrorInfo(BaseErrors.UnhandledError, null, 500, error);
+      const errInfo = new ErrorInfo(BaseErrors.UnhandledError, null, 400, error);
       return this.convertToEntityMetadata<T>(errInfo);
     }
   }
@@ -106,7 +106,7 @@ export class BaseService<T extends BaseEntity> {
       return this.convertToEntityMetadata<T[]>(null, result);
     } catch (error) {
 
-      const errInfo = new ErrorInfo(BaseErrors.UnhandledError, null, 500, error);
+      const errInfo = new ErrorInfo(BaseErrors.UnhandledError, null, 400, error);
       return this.convertToEntityMetadata<T[]>(errInfo);
     }
   }
@@ -117,19 +117,19 @@ export class BaseService<T extends BaseEntity> {
   ): EntityMetadata<TResult> {
     if (err) return this.getErrorEntityMetadata(err.message, err.type, err.statusCode, err.error);
     if (result) return this.getSuccessEntityMetadata(result);
-    const error: ErrorInfo = new ErrorInfo(BaseErrors.EmptyResponse, null, 500);
+    const error: ErrorInfo = new ErrorInfo(BaseErrors.EmptyResponse, null, 400);
     return new EntityMetadata<TResult>(undefined, error);
   }
 
   protected getErrorEntityMetadata<TResult>(
     type: string,
     message: string,
-    statusCode: number = 500,
+    statusCode: number = 400,
     error: any = null,
   ): EntityMetadata<TResult> {
     this.loggerService.error(`${type} - ${message}`, error);
     const errInfo: ErrorInfo = new ErrorInfo(type, message, statusCode, error);
-    return new EntityMetadata<TResult>(undefined, error);
+    return new EntityMetadata<TResult>(undefined, errInfo);
   }
 
   protected getSuccessEntityMetadata<TResult>(data: TResult): EntityMetadata<TResult> {

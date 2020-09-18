@@ -6,7 +6,6 @@ export class AppException extends HttpException {
 
   constructor (error: ErrorInfo) {
     super(error.type, error.statusCode);
-    this.error = error;
     this.message = error.message;
   }
 }

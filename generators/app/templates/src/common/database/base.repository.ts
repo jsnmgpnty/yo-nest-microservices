@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { BaseEntity } from '../models';
 
 export class BaseRepository<T extends BaseEntity> {
-  private model: mongoose.Model<mongoose.Document>;
+  protected model: mongoose.Model<mongoose.Document>;
 
   constructor(schemaModel: mongoose.Model<mongoose.Document>) {
     this.model = schemaModel;
