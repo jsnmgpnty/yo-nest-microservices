@@ -1,5 +1,6 @@
 import { Module, DynamicModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config'
 <% if (useRabbitMq) { %>
 import { MessagingModule } from '../messaging/messaging.module';
 <% } %>
@@ -12,6 +13,7 @@ import { OpenApiConnectorModule } from '../open-api-connector';
 <% if (useStorage) { %>
 import { StorageModule } from '../storage';
 <% } %>
+import configuration from '../configuration';
 import { LoggingModule } from '../logging';
 import { ConfigOptions } from '../config-options';
 import { ExampleModule } from '../example/example.module';
@@ -22,6 +24,7 @@ export class AppModule {
     return {
       module: AppModule,
       imports: [
+        ConfigModule.forRoot({ load: [configuration] }),
         MongooseModule.forRoot(config.database.connectionString),
         LoggingModule.register({ elasticSearch: config.elasticSearch, appName: config.appName }),
         <% if(useRabbitMq) { %>

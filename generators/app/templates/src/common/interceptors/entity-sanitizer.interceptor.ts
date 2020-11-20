@@ -19,6 +19,20 @@ export class EntitySanitizerInterceptor implements NestInterceptor {
         delete: true,
       },
       {
+        validate: (obj, prop) => prop === '_id',
+        recurse: false,
+        delete: false,
+        replace: (obj, prop) => {
+          if (typeof obj[prop] === 'object') {
+            obj['id'] = obj[prop].toString();
+            delete obj[prop];
+          } else {
+            obj['id'] = obj[prop];
+            delete obj[prop];
+          }
+        },
+      },
+      {
         validate: (obj, prop) => /^_/.test(prop),
         recurse: false,
         delete: true,
@@ -55,6 +69,11 @@ export class EntitySanitizerInterceptor implements NestInterceptor {
                   object[prop] = clean(object[prop]);
                   return false;
                 }
+
+                if (v.replace) {
+                  v.replace(object, prop);
+                  return false;
+                }
               });
             }
             return object;
@@ -72,4 +91,5 @@ interface Validator {
   validate: (obj: any, prop: string) => boolean;
   recurse: boolean;
   delete: boolean;
+  replace?: (obj: any, prop: string) => any;
 };

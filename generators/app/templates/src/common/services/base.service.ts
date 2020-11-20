@@ -5,10 +5,7 @@ import { EntityMetadata, ErrorInfo, BaseEntity, BaseErrors } from '../models';
 import { LoggerService } from '../../logging/logger.service';
 
 export class BaseService<T extends BaseEntity> {
-  public repository: BaseRepository<T>;
-
-  constructor(model: Model<Document>, private loggerService: LoggerService) {
-    this.repository = new BaseRepository(model);
+  constructor(private repository: BaseRepository<T>, private loggerService: LoggerService) {
   }
 
   public async create(item: T): Promise<EntityMetadata<T>> {

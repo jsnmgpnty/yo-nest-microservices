@@ -8,14 +8,12 @@ import * as helmet from 'fastify-helmet';
 import { AppModule } from './app/app.module';
 import setupStaticPage from './utils/setup-static';
 import { resolve } from 'path';
-import { getConfig } from './config-helper';
+import configuration from './configuration';
 import { ConfigOptions } from './config-options';
 import { LoggerService } from './logging';
-require('dotenv').config();
 
 async function bootstrap() {
-  // configuration setup
-  const config = getConfig() as ConfigOptions;
+  const config = configuration() as ConfigOptions;
 
   // fastify app setup
   const app = await NestFactory.create<NestFastifyApplication>(
